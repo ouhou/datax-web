@@ -50,7 +50,8 @@ public class JobTrigger {
             logger.warn(">>>>>>>>>>>> trigger fail, jobId invalid，jobId={}", jobId);
             return;
         }
-        if (GlueTypeEnum.BEAN.getDesc().equals(jobInfo.getGlueType())) {
+        //if (GlueTypeEnum.BEAN.getDesc().equals(jobInfo.getGlueType())) {
+        if (GlueTypeEnum.BEAN.getDesc().equals(jobInfo.getGlueType()) && "executorJobHandler".equalsIgnoreCase(jobInfo.getExecutorHandler())) {
             //解密账密
             String json = JSONUtils.changeJson(jobInfo.getJobJson(), JSONUtils.decrypt);
             jobInfo.setJobJson(json);
