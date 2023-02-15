@@ -1,4 +1,4 @@
-package com.sql.model;
+package com.wugui.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

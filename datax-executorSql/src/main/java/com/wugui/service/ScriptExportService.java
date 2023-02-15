@@ -1,4 +1,4 @@
-package com.sql.service;
+package com.wugui.service;
 
 import java.util.List;
 

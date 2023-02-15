@@ -1,4 +1,4 @@
-package com.sql.dao;
+package com.wugui.dao;
 
 import com.wugui.model.JobScriptDataSource;
 import org.apache.ibatis.annotations.Mapper;

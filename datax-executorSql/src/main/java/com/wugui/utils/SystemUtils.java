@@ -1,4 +1,4 @@
-package com.sql.utils;
+package com.wugui.utils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

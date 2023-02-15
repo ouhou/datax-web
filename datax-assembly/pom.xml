@@ -35,7 +35,7 @@
                         <descriptor>${basedir}/package.xml</descriptor>
                     </descriptors>
                     <finalName>${project.parent.artifactId}-${project.parent.version}</finalName>
-                    <outputDirectory>D:/test/datax-web/build</outputDirectory>
+                    <outputDirectory>../build</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>

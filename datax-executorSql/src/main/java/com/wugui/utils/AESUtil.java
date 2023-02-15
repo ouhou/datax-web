@@ -1,6 +1,4 @@
-package com.sql.utils;
-
-import com.wugui.datax.admin.core.conf.JobAdminConfig;
+package com.wugui.utils;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.Cipher;
@@ -60,10 +58,7 @@ public class AESUtil {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    private static KeyGenerator getKeyGenerator() {
-
-        String key = JobAdminConfig.getAdminConfig().getDataSourceAESKey();
-
+    private static KeyGenerator getKeyGenerator(String key) {
         KeyGenerator keygen = null;
         try {
             keygen = KeyGenerator.getInstance(KEY_ALGORITHM);
@@ -77,9 +72,9 @@ public class AESUtil {
         return keygen;
     }
 
-    public static String encrypt(String message) {
+    public static String encrypt(String message,String key) {
         try {
-            KeyGenerator keygen = getKeyGenerator();
+            KeyGenerator keygen = getKeyGenerator(key);
             SecretKey secretKey = new SecretKeySpec(keygen.generateKey().getEncoded(), KEY_ALGORITHM);
             return Base64.getEncoder().encodeToString(encrypt(secretKey, message.getBytes(StandardCharsets.UTF_8)));
         } catch (Exception e) {
@@ -88,9 +83,9 @@ public class AESUtil {
         return null;
     }
 
-    public static String decrypt(String ciphertext) {
+    public static String decrypt(String ciphertext,String key) {
         try {
-            KeyGenerator keygen = getKeyGenerator();
+            KeyGenerator keygen = getKeyGenerator(key);
             SecretKey secretKey = new SecretKeySpec(keygen.generateKey().getEncoded(), KEY_ALGORITHM);
             return new String(decrypt(secretKey, Base64.getDecoder().decode(ciphertext)), StandardCharsets.UTF_8);
         } catch (Exception e) {
@@ -101,10 +96,11 @@ public class AESUtil {
 
     public static void main(String[] args) {
         String message = "root";
-        String ciphertext = encrypt(message);
+        String key = "";
+        String ciphertext = encrypt(message,key);
 
         System.out.println("加密后密文为: " + ciphertext);
-        System.out.println("解密后明文为:" + decrypt(ciphertext));
+        System.out.println("解密后明文为:" + decrypt(ciphertext,key));
     }
 
 }

@@ -1,10 +1,10 @@
-package com.sql.service.impl;
+package com.wugui.service.impl;
 
-
-import com.sql.dao.JpaMapper;
-import com.sql.service.ScriptExportService;
-import com.wugui.datax.admin.util.AESUtil;
-import com.wugui.model.JobScriptDataSource;
+import com.wugui.service.ScriptExportService;
+import com.wugui.sql.executor.dao.JpaMapper;
+import com.wugui.sql.executor.model.JobScriptDataSource;
+import com.wugui.sql.executor.utils.AESUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,32 +18,36 @@ import java.util.stream.Collectors;
 @Service
 public class ScriptExportServiceImpl implements ScriptExportService {
 
+    @Value("${datasource.aes.key}")
+    private String dataSourceAESKey;
+
     @Resource
     private JpaMapper jpaMapper;
+
     @Override
-    public List executeScript(String id, String sql, int pageCurrent , int pageSize) {
-        JobScriptDataSource jobDataSource= jpaMapper.findByDataid(Long.parseLong(id));
-        if (jobDataSource!=null) {
+    public List executeScript(String id, String sql, int pageCurrent, int pageSize) {
+        JobScriptDataSource jobDataSource = jpaMapper.findByDataid(Long.parseLong(id));
+        if (jobDataSource != null) {
             System.out.println(jobDataSource);
             String name = jobDataSource.getDatasource_name();
             String dbUrl = jobDataSource.getJdbc_url();
             String jdbcDriver = jobDataSource.getJdbc_driver_class();
             String username = jobDataSource.getJdbc_username();
             String password = jobDataSource.getJdbc_password();
-            List list = execSqlDetail(jdbcDriver, dbUrl, AESUtil.decrypt(username) ,AESUtil.decrypt(password), sql);
+            List list = execSqlDetail(jdbcDriver, dbUrl, AESUtil.decrypt(username, dataSourceAESKey), AESUtil.decrypt(password, dataSourceAESKey), sql);
             List list1 = (List) list.stream().skip((pageCurrent - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
             return list1;
         } else {
             List list = new ArrayList<>();
-            list.add("没有此数据源id"+id);
+            list.add("没有此数据源id" + id);
             return list;
         }
     }
 
     @Override
     public List executeScript(String id, String script) {
-        JobScriptDataSource jobDataSource= jpaMapper.findByDataid(Long.parseLong(id));
-        if (jobDataSource!=null) {
+        JobScriptDataSource jobDataSource = jpaMapper.findByDataid(Long.parseLong(id));
+        if (jobDataSource != null) {
             System.out.println(jobDataSource);
             String name = jobDataSource.getDatasource_name();
             String dbUrl = jobDataSource.getJdbc_url();
@@ -51,11 +55,11 @@ public class ScriptExportServiceImpl implements ScriptExportService {
             String username = jobDataSource.getJdbc_username();
 
             String password = jobDataSource.getJdbc_password();
-            List list = execSqlDetail(jdbcDriver, dbUrl,AESUtil.decrypt(username),AESUtil.decrypt(password), script);
+            List list = execSqlDetail(jdbcDriver, dbUrl, AESUtil.decrypt(username, dataSourceAESKey), AESUtil.decrypt(password, dataSourceAESKey), script);
             return list;
         } else {
             List list = new ArrayList<>();
-            list.add("没有此数据源id"+id);
+            list.add("没有此数据源id" + id);
             return list;
         }
     }
@@ -82,11 +86,11 @@ public class ScriptExportServiceImpl implements ScriptExportService {
             //获取字段数
             int columnCount = metaData.getColumnCount();
             // 展开结果集数据库
-            while(rs.next()){
+            while (rs.next()) {
                 Map map = new HashMap();
-                for(int i=1;i<=columnCount;i++){
+                for (int i = 1; i <= columnCount; i++) {
                     //获取字段名称 metaData.getColumnName(i)
-                    map.put(metaData.getColumnName(i),rs.getObject(i));
+                    map.put(metaData.getColumnName(i), rs.getObject(i));
                 }
                 list.add(map);
             }
