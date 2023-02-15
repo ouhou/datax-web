@@ -1,7 +1,8 @@
-package com.wugui.core.config;
+package com.sql.core.config;
 
+import com.sql.utils.SystemUtils;
 import com.wugui.datatx.core.executor.impl.JobSpringExecutor;
-import com.wugui.utils.SystemUtils;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,11 +1,13 @@
-package com.wugui.service.impl;
+package com.sql.service.impl;
 
-import com.wugui.dao.JpaMapper;
+
+import com.sql.dao.JpaMapper;
+import com.sql.service.ScriptExportService;
+import com.wugui.datax.admin.util.AESUtil;
 import com.wugui.model.JobScriptDataSource;
-import com.wugui.service.ScriptExportService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,21 +18,41 @@ import java.util.stream.Collectors;
 @Service
 public class ScriptExportServiceImpl implements ScriptExportService {
 
-    @Autowired
+    @Resource
     private JpaMapper jpaMapper;
     @Override
     public List executeScript(String id, String sql, int pageCurrent , int pageSize) {
-        JobScriptDataSource jobDataSource= jpaMapper.findByDataid(id);
+        JobScriptDataSource jobDataSource= jpaMapper.findByDataid(Long.parseLong(id));
         if (jobDataSource!=null) {
             System.out.println(jobDataSource);
-            String name = jobDataSource.getName();
-            String dbUrl = jobDataSource.getDburl();
-            String jdbcDriver = jobDataSource.getJdbcdriver();
-            String username = jobDataSource.getUsername();
-            String password = jobDataSource.getPassword();
-            List list = execSqlDetail(jdbcDriver, dbUrl, username, password, sql);
+            String name = jobDataSource.getDatasource_name();
+            String dbUrl = jobDataSource.getJdbc_url();
+            String jdbcDriver = jobDataSource.getJdbc_driver_class();
+            String username = jobDataSource.getJdbc_username();
+            String password = jobDataSource.getJdbc_password();
+            List list = execSqlDetail(jdbcDriver, dbUrl, AESUtil.decrypt(username) ,AESUtil.decrypt(password), sql);
             List list1 = (List) list.stream().skip((pageCurrent - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
             return list1;
+        } else {
+            List list = new ArrayList<>();
+            list.add("没有此数据源id"+id);
+            return list;
+        }
+    }
+
+    @Override
+    public List executeScript(String id, String script) {
+        JobScriptDataSource jobDataSource= jpaMapper.findByDataid(Long.parseLong(id));
+        if (jobDataSource!=null) {
+            System.out.println(jobDataSource);
+            String name = jobDataSource.getDatasource_name();
+            String dbUrl = jobDataSource.getJdbc_url();
+            String jdbcDriver = jobDataSource.getJdbc_driver_class();
+            String username = jobDataSource.getJdbc_username();
+
+            String password = jobDataSource.getJdbc_password();
+            List list = execSqlDetail(jdbcDriver, dbUrl,AESUtil.decrypt(username),AESUtil.decrypt(password), script);
+            return list;
         } else {
             List list = new ArrayList<>();
             list.add("没有此数据源id"+id);
