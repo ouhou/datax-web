@@ -43,7 +43,7 @@ public class ScriptExportServiceImpl implements ScriptExportService {
             String username = jobDataSource.getJdbc_username();
             String password = jobDataSource.getJdbc_password();
             Map<String, List> mapList = execSqlDetail(jdbcDriver, dbUrl, AESUtil.decrypt(username, dataSourceAESKey), AESUtil.decrypt(password, dataSourceAESKey), sql);
-            if(sql.contains("select")){
+            if(sql.substring(0,6).equals("select")||sql.substring(0,6).equals("SELECT")){
                 if(mapList.containsKey("200")){
                     List excuteList = mapList.get("200");
                     List list1 = (List) excuteList.stream().skip((pageCurrent - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
@@ -86,7 +86,8 @@ public class ScriptExportServiceImpl implements ScriptExportService {
             // 执行查询
             stmt = conn.createStatement();
             //如果字符串是查询sql 执行
-            if(sql.contains("select")){
+
+            if(sql.substring(0,6).equals("select")||sql.substring(0,6).equals("SELECT")){
                     ResultSet rs = stmt.executeQuery(sql);
                     //获取表结构
                     ResultSetMetaData metaData = rs.getMetaData();
@@ -108,7 +109,8 @@ public class ScriptExportServiceImpl implements ScriptExportService {
                 //还需要添加假如是多条sql,需要按照“；” 拆分执行sql
                 String[] sqlArray = sql.split(";");
                 int i =0;
-                if(sqlArray.length >1){
+                System.out.println(sql.substring(0,6)+"==="+sqlArray.length);
+                if(sqlArray.length >1 && !sqlArray[1].equals(" ")){
                     for (String sqlScript:sqlArray) {
                         i = stmt.executeUpdate(sqlScript);
                     }

@@ -8,6 +8,7 @@ import com.wugui.datatx.core.biz.model.TriggerParam;
 import com.wugui.datatx.core.glue.GlueTypeEnum;
 import com.wugui.datatx.core.handler.IJobHandler;
 import com.wugui.datatx.core.handler.annotation.JobHandler;
+import com.wugui.datatx.core.log.JobLogger;
 import com.wugui.service.ScriptExportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,9 +63,11 @@ public class DataxWebExecutor extends IJobHandler {
                     //
                     returnT = new ReturnT<>(200, map.get("200").toString());
                     logger.info(">>>>>>>>>>> 执行结果"+returnT);
+                    JobLogger.log("<br>----- datax-web job success -----<br>-----返回数据:"+returnT);
                     return  IJobHandler.SUCCESS;
                 } else {
                     returnT = new ReturnT<>(IJobHandler.FAIL.getCode(),  map.get("500").toString());
+                    JobLogger.log("<br>----- datax-web job fail -----<br>----- 失败原因"+returnT);
 
                 }
             return returnT;
