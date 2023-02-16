@@ -59,6 +59,7 @@ public class AESUtil {
      * @throws NoSuchAlgorithmException
      */
     private static KeyGenerator getKeyGenerator(String key) {
+
         KeyGenerator keygen = null;
         try {
             keygen = KeyGenerator.getInstance(KEY_ALGORITHM);
@@ -72,7 +73,8 @@ public class AESUtil {
         return keygen;
     }
 
-    public static String encrypt(String message,String key) {
+
+    public static String encrypt(String message, String key) {
         try {
             KeyGenerator keygen = getKeyGenerator(key);
             SecretKey secretKey = new SecretKeySpec(keygen.generateKey().getEncoded(), KEY_ALGORITHM);
@@ -83,7 +85,7 @@ public class AESUtil {
         return null;
     }
 
-    public static String decrypt(String ciphertext,String key) {
+    public static String decrypt(String ciphertext, String key) {
         try {
             KeyGenerator keygen = getKeyGenerator(key);
             SecretKey secretKey = new SecretKeySpec(keygen.generateKey().getEncoded(), KEY_ALGORITHM);
@@ -96,11 +98,10 @@ public class AESUtil {
 
     public static void main(String[] args) {
         String message = "root";
-        String key = "";
-        String ciphertext = encrypt(message,key);
+        String ciphertext = encrypt(message, "");
 
         System.out.println("加密后密文为: " + ciphertext);
-        System.out.println("解密后明文为:" + decrypt(ciphertext,key));
+        System.out.println("解密后明文为:" + decrypt(ciphertext, ""));
     }
 
 }

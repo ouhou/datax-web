@@ -1,10 +1,8 @@
 #!/bin/bash
 #
 
-FRIEND_NAME=DATAX-EXEXUTORSql
-
-MAIN_CLASS=com.wugui.DataxSqlExecutorApplication
-
+FRIEND_NAME=DATAX-EXEXUTOR-SQL
+MAIN_CLASS=com.wugui.executor.DataxSqlExecutorApplication
 if [ ! ${ENV_FILE} ]; then
     ENV_FILE="env.properties"
 fi
@@ -117,6 +115,7 @@ fi
 LIB_PATH=${BIN}/../lib
 USER_DIR=${BIN}/../
 CLASSPATH=${LIB_PATH}"/*:"${SERVICE_CONF_PATH}":."
+echo ${CLASSPATH}
 if [ ${REMOTE_DEBUG_SWITCH} == true ]; then
     JAVA_OPTS=${JAVA_OPTS}" -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=${REMOTE_DEBUG_PORT}"
 fi

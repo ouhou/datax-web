@@ -6,33 +6,37 @@ server:
 spring:
   #数据源
   datasource:
-    username: data_center
-    password: yr6zp6Unvfu2
-    url: jdbc:mysql://pc-2ze50y5th1e9m11a0.rwlb.rds.aliyuncs.com:3306/datax_web?serverTimezone=Asia/Shanghai&useLegacyDatetimeCode=false&useSSL=false&nullNamePatternMatchesAll=true&useUnicode=true&characterEncoding=UTF-8
-    driver-class-name: com.mysql.jdbc.Driver
+     username: data_center
+     password: yr6zp6Unvfu2
+     url: jdbc:mysql://pc-2ze50y5th1e9m11a0.rwlb.rds.aliyuncs.com:3306/datax_web?serverTimezone=Asia/Shanghai&useLegacyDatetimeCode=false&useSSL=false&nullNamePatternMatchesAll=true&useUnicode=true&characterEncoding=UTF-8
+
+#     username: root
+#     password: root
+#     url: jdbc:mysql://127.0.0.1:3306/mybatis?serverTimezone=Asia/Shanghai&useLegacyDatetimeCode=false&useSSL=false&nullNamePatternMatchesAll=true&useUnicode=true&characterEncoding=UTF-8
+     driver-class-name: com.mysql.jdbc.Driver
 
 
 # log config
 logging:
   config: classpath:logback.xml
-  #  path: ./data/applogs/executor/jobhandler
+#  path: ./data/applogs/executor/jobhandler
   path: ${data.path}/applogs/executor/jobhandler
 
 datax:
   job:
     admin:
       ### datax admin address list, such as "http://address" or "http://address01,http://address02"
-      addresses: http://127.0.0.1:${datax.admin.port}
-      #
-    #      addresses: http://127.0.0.1:8089
+          addresses: http://127.0.0.1:${datax.admin.port}
+
+#          addresses: http://127.0.0.1:8009
     executor:
       appname: sql-executor
       ip:
-      #      port: 9090
+#      port: 9090
       port: 9988
       ### job log path
       logpath: ${data.path}/applogs/executor/jobhandler
-      #      logpath: ./data/applogs/executor/jobhandler
+#      logpath: ./data/applogs/executor/jobhandler
       ### job log retention days
       logretentiondays: 30
     ### job, access token
@@ -43,7 +47,8 @@ datax:
   #    jsonpath: D:\\temp\\executor\\json\\
 
   pypath: ${python.path}
-#  pypath: D:\DataX\Datax-web\datax-web\doc\datax-web\datax-python3\datax.py
+  #  pypath: D:\DataX\Datax-web\datax-web\doc\datax-web\datax-python3\datax.py
+
 #加密解密key
 datasource:
   aes:

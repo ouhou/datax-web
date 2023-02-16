@@ -1,8 +1,7 @@
 package com.wugui.core.config;
 
+import com.wugui.utils.SystemUtils;
 import com.wugui.datatx.core.executor.impl.JobSpringExecutor;
-
-import com.wugui.sql.executor.utils.SystemUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +36,8 @@ public class DataXConfig {
 
     @Value("${datax.job.executor.logretentiondays}")
     private int logRetentionDays;
+
+
 
     @Bean
     public JobSpringExecutor JobExecutor() {
